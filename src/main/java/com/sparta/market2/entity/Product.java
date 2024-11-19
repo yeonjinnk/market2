@@ -1,24 +1,24 @@
-package com.sparta.market2;
+package com.sparta.market2.entity;
 
+import com.sparta.market2.dto.ProductRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 
 @Entity // JPA가 관리할 수 있는 Entity 클래스 지정
 @Getter
 @Setter
-@Table(name = "item") // 매핑할 테이블의 이름을 지정
+@Table(name = "Item") // 매핑할 테이블의 이름을 지정
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @Column(nullable = false)
     private String title;
@@ -41,10 +41,13 @@ public class Product {
     }
 
     public void update(ProductRequestDto requestDto) {
+        System.out.println("Product에서 update 실행됨!");
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
         this.price = requestDto.getPrice();
+        this.username = requestDto.getUsername();
     }
+
     // JPA를 사용하여 삭제하는 방법
     public void delete(EntityManager entityManager) {
         // 엔티티를 조회하여 삭제

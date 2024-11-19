@@ -1,10 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
-$END$
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        getBoard();
+    })
+
+    function getBoard() {
+        $.ajax({
+            type: 'GET',
+            url: '/post',
+            success: function(response) {
+                for(let i = 0; i < response.length; i++) {
+                    let id = response[i].id;
+                    let title = response[i].title;
+                    let content = response[i].content;
+                    let price = response[i].price;
+                    let username = response[i].username;
+                    console.log("id: " + id + "title: " + title + "content: " + content+ "price: " + price+ "username: " + username);
+                    // addHTML(id, username, contents, modifiedAt);
+                    addHTML(id, title, content, price, username);
+
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log("게시글 조회 실패!");
+                alert("게시글 작성에 실패했습니다. 다시 시도해주세요.");
+            }
+        })
+    }
+
+    function viewPost(id) {
+        console.log("id:" + id);
+        location.href='/view/'+id;
+    }
+
+    function addHTML(id, title, content, price, username) {
+        let html = `<tr>
+                <td>${id}</td>
+                <td onclick="viewPost(${id})" id="title">${title}</td>
+                <td>${price}</td>
+                <td>${username}</td>
+            </tr>`;
+
+        $("#border-box").append(html);
+
+    }
+
+
+    function post() {
+        location.href = "/registBoard";
+    }
+
+
+</script>
+
+<div class="wrap">
+    <h2>항해마켓</h2>
+    <table>
+        <thead>
+        <tr class="board-header">
+            <th>번호</th>
+            <th>제목</th>
+            <th>가격</th>
+            <th>작성자</th>
+        </tr>
+        </thead>
+        <tbody id="border-box">
+        <!-- 데이터가 여기에 추가됩니다 -->
+        </tbody>
+    </table>
+    <div class="button-box">
+        <button type="button" onclick="post()">글쓰기</button>
+    </div>
+</div>
+
+
+
 </body>
 </html>

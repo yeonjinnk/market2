@@ -1,12 +1,13 @@
-package com.sparta.market2;
+package com.sparta.market2.dto;
 
+import com.sparta.market2.entity.Product;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
 public class ProductResponseDto {
-    private Long id;
+    private int id;
     private String title;
     private String content;
     private int price;
@@ -19,5 +20,7 @@ public class ProductResponseDto {
         this.price = product.getPrice();
         this.username = product.getUsername();
     }
+
+
 
 }

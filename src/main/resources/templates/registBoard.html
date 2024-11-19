@@ -1,10 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+  function writePost() {
+    let title = $("#title").val();
+    let content = $("#content").val();
+    let price = $("#price").val();
+    let username = $("#username").val();
+    console.log("title:" + title + "content:" + content+ "price:" + price+ "username:" + username);
+    let data = {'title': title, 'content': content, 'price':price, 'username':username};
+    $.ajax({
+      type: "POST",
+      url: "/post",
+      contentType: "application/json",
+      data: JSON.stringify(data),
+      success: function(response) {
+        alert("게시글이 성공적으로 작성되었습니다.");
+        location.href="/";
+      },
+      error: function(xhr, status, error) {
+        console.log("AJAX 요청 실패");
+        console.log("xhr:", xhr);
+        console.log("status:", status);
+        console.log("error:", error);
+        alert("게시글 작성에 실패했습니다. 다시 시도해주세요.");
+      }
+    });
+  }
+
+  function goBoard() {
+    if(confirm("목록으로 돌아가시겠습니까?")) {
+      location.href = "/";
+    }
+  }
+</script>
 <body>
-$END$
+<h2>항해마켓</h2>
+  <div id="wrap">
+    <div id="data">
+      제목 : <input type="text" id="title"><br>
+      내용 : <input type="text" id="content"><br>
+      가격 : <input type="number" id="price"><br>
+      작성자 : <input type="text" id="username">
+    </div>
+    <div id="button">
+      <button type="button" onclick="writePost()">작성하기</button>
+      <button type="button" onclick="goBoard()">목록으로</button>
+    </div>
+  </div>
 </body>
 </html>

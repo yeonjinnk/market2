@@ -1,10 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+    $(document).ready(function() {
+
+
+    })
+
+    function modifyPost() {
+        let id = $("#id").val();
+        let title = $("#title").val();
+        let content = $("#content").val();
+        let price = $("#price").val();
+        let username = $("#username").val();
+        console.log("id: " + id + "title: " + title + "content: " + content + "price: " + price + "username: " + username);
+        // 기존 값이 있으면 그대로 두고, 값이 변경되었으면 새로운 값으로 덮어 씌움
+        // let data = {
+        //     'title': title ? $("#title").data('original-value') : $("#title").data('original-value'),
+        //     'content': content ? $("#content").data('original-value') : $("#content").data('original-value'),
+        //     'price': price ? $("#price").data('original-value') : $("#price").data('original-value'),
+        //     'username': username
+        // };
+        let data = {'title': title, 'content': content, 'price':price, 'username':username};
+        console.log("title" + data.title + "content" + data.content + "price" + data.price  + "username" + data.username );
+        $.ajax({
+            type: 'PUT',
+            url: `/post/`+id,
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function(response) {
+                alert('성공적으로 수정되었습니다.');
+                location.href="/";
+            }, error: function(xhr, status, error) {
+                console.log("게시글 수정 실패!");
+                alert("게시글 수정에 실패했습니다. 다시 시도해주세요.");
+            }
+
+        });
+    }
+
+    function deletePost() {
+        let id = $("#id").val();
+        console.log("id: " + id + "title: " + title + "content: " + content + "price: " + price + "username: " + username);
+        $.ajax({
+            type: 'DELETE',
+            url: `/post/`+id,
+            success: function(response) {
+                alert('성공적으로 삭제되었습니다.');
+                location.href="/";
+            }, error: function(xhr, status, error) {
+                console.log("게시글 삭제 실패!");
+                alert("게시글 삭제 실패했습니다. 다시 시도해주세요.");
+            }
+
+        });
+    }
+
+    function goBoard() {
+        if(confirm("목록으로 돌아가시겠습니까?")) {
+            location.href = "/";
+        }
+    }
+
+</script>
 <body>
-$END$
+<h2>항해마켓</h2>
+<div id="wrap">
+    <div id="data">
+        제목 : <input type="text" id="title" th:value="${product.title}"><br>
+        내용 : <input type="text" id="content" th:value="${product.content}"><br>
+        가격 : <input type="number" id="price" th:value="${product.price}"><br>
+        작성자 : <input type="text" id="username"  th:value="${product.username}">
+        <input type="hidden" id="id" readonly th:value="${id}">
+    </div>
+    <div id="button">
+        <button type="button" onclick="modifyPost()">수정하기</button>
+        <button type="button" onclick="deletePost()">삭제하기</button>
+        <button type="button" onclick="goBoard()">목록으로</button>
+    </div>
+</div>
 </body>
 </html>

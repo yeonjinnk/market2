@@ -1,4 +1,4 @@
-package com.sparta.market2;
+package com.sparta.market2.dto;
 
 import lombok.Getter;
 import lombok.Setter;
